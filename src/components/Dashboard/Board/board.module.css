@@ -1,0 +1,512 @@
+.dashboardContainer {
+    width: 100%;
+    height: 100vh; 
+    display: flex;
+    flex-direction: row;
+    overflow: hidden; 
+}
+
+.logoutOption {
+    margin-top: auto;
+    color: #CF3636;
+    font-weight: 600;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.welcomeMessage {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.currentDate {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    color: #707070;
+}
+
+.subHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.titleAndButton {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.boardTitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 29px;
+}
+
+.addPeopleButton {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.addPeopleButton img {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
+.addPeopleText {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #707070;
+}
+
+.dropdownContainer {
+    margin-left: auto;
+}
+
+.dateDropdown {
+    color: #000000;
+    border: 1px solid #000000;
+    background-color: #FFFFFF;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.mainContent {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+    height: 100%;
+    padding:25px
+}
+
+/* Main container holding the board columns */
+.mainBoard {
+    display: flex;
+    justify-content: flex-start;
+    gap: 24px;
+    padding-bottom: 16px;
+    flex-grow: 1;
+    height: calc(100% - 120px); 
+    overflow-x: auto; /* Enables horizontal scrolling */
+    overflow-y: auto; /* Enable scrolling within the content wrapper */
+    margin-top: 30px;
+
+    box-sizing: border-box;
+}
+
+
+/* Column title styling */
+.columnText {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.mainBoard::-webkit-scrollbar {
+    height: 10px;
+    width:3px;
+    }
+    
+    .mainBoard::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 15px;
+    }
+    
+    .mainBoard::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+    }
+
+    
+
+.addTask {
+    width: auto; /* Adjust to fit content */
+    height: 24px; /* Set height */
+    border: none; /* No border */
+    border-radius: 50%; /* Optional: make it circular */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    position: absolute; 
+    top: 20px; 
+    right: 24px; 
+    opacity: 1; 
+    cursor: pointer; 
+    background-color: #EEF2F5; /* Background color */
+    gap: 10px; /* Space between icons */
+}
+
+.codicon {
+    width: 24px;
+    height: 24px;
+}
+
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Transparent black overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensures it's on top */
+}
+
+.modalContainer {
+    width: 600px;
+    height: 260px;
+    background: white;
+    border: 1px solid #767575;
+    border-radius: 8px;
+    position: relative;
+    padding: 20px; /* Add some padding for content */
+    opacity: 1; /* Fully visible */
+}
+
+
+.taskModalContainer {
+    width: 680px;
+    height: 550px;
+    background: white;
+    border: 1px solid #767575;
+    border-radius: 22px;
+    position: relative;
+    padding: 30px;
+}
+
+
+
+/* Close Button: Positioned at the top-right inside the modal */
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 150px;
+    }
+
+    .sidebarOption {
+        font-size: 14px;
+    }
+
+    .sidebarGroup {
+        margin-bottom: 16px;
+    }
+
+    .boardColumn {
+        height: auto;
+    }
+
+    .mainBoard {
+        flex-direction: column;
+    }
+}
+.boardColumn {
+    flex: 0 0 330px; /* Fixed width of 330px for each column */
+    max-width: 330px;
+    height: 100%; /* Full height within the container */
+    border-radius: 10px;
+    background: #EEF2F5;
+    display: flex;
+    flex-direction: column;
+    padding: 10px; /* Padding for the column */
+    position: relative;
+    overflow-y: auto; /* Enable vertical scrolling */
+    box-sizing: border-box;
+}
+
+/* Column title styling */
+.columnText {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px; /* Updated font size */
+    font-weight: bold;
+    position: absolute;
+    top: 20px; /* Positioning for the title */
+    left: 20px;
+}
+
+/* Content wrapper styling */
+.contentWrapper {
+    width: calc(100% - 30px); /* Adjust width */
+    position: absolute; /* Positioning below the title */
+    top: 55px; /* Adjust the top position as needed */
+    left: 16px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adjust the gap between task wrappers */
+    max-height: calc(100% - 70px); /* Prevent overflow of content below the add task button */
+}
+
+   
+/* Task wrapper styling */
+.taskWrapper {
+    margin-bottom: 10px; /* Spacing between tasks */
+    width: 100%; /* Full width of parent */
+    background-color: #FFF; /* Background color for task containers */
+    border-radius: 10px; /* Rounded corners for visual appeal */
+    padding: 15px; /* Internal padding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for depth */
+}
+
+  .checklistLayout {
+    display: flex; /* Enable flexbox layout */
+    justify-content: space-between; /* Distribute space between children */
+    align-items: center; /* Align items vertically centered */
+  }
+  
+  .codicon.codicon-chevron-down {
+    width: 24px; /* Remove 'Hug' and use just 'px' */
+    height: 24px; /* Same here */
+    padding: 3.2px 0 0 0; /* This is fine */
+    gap: 8px; /* Use if this element is a flex container */
+    border-radius: 3.2px 0 0 0; /* This is fine */
+    opacity: 0; /* If you want it to be visible, set this to 1 */
+    background: #EEECEC; /* This is fine */
+}
+.checklistContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 44px;
+    padding: 8px;
+    gap: 10px;
+    border-radius: 12px;
+    border: 1px solid #E2E2E2; 
+    opacity: 1; 
+    background-color: #FFFFFF; 
+    box-sizing: border-box; 
+    display: flex;
+    align-items: center; /* Align checkbox and input vertically */
+    margin-bottom: 8px; /* Adjust this value to control the gap */
+  }
+  .checkbox {
+    width: 18px;
+    height: 18px;
+    background: #17A2B8;
+    border: 2px solid #17A2B8;
+  }
+  
+  .taskInput {
+    flex: 1; 
+    height: 35px; 
+    color: #000; 
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    outline: none; 
+  }
+  .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 10px;
+  }
+  /* First Line: Priority Dot, Priority Label, Dots Button */
+  .headerRow {
+    display: flex;
+    align-items: center; /* Centers items vertically */
+    gap: 5px;
+  }
+  
+  .dotsButton {
+    margin-left: auto;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    display: flex; /* Ensures icon is centered */
+    margin-bottom: 10px;
+
+    font-weight: 700;
+    border:1.5px
+  }
+  
+  
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+  
+  .highPriority {
+    background-color: #FF2473;
+  }
+  
+  .moderatePriority {
+    background-color: #18B0FF;
+  }
+  
+  .lowPriority {
+    background-color: #63C05B;
+  }
+  
+  .priorityLabel {
+    font-family: 'Poppins', sans-serif;
+    font-size: 8px;
+    font-weight: 500;
+    color: #707070;
+    height: 12px;
+  }
+
+  
+  /* Second Line: Task Title */
+  .taskTitleWrapper {
+    position: relative;            /* Required for positioning the tooltip */
+}
+
+.taskTitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: #000;
+    margin-top: 5px;
+    overflow: hidden;               /* Ensures the overflow is hidden */
+    display: -webkit-box;          /* For the multi-line ellipsis */
+    -webkit-box-orient: vertical;  /* Sets the box orientation to vertical */
+    -webkit-line-clamp: 2;         /* Limits the text to 2 lines */
+    text-overflow: ellipsis;       /* Adds the ellipsis when text overflows */
+    max-width: 100%;               /* Ensures the title doesn't exceed the width of its container */
+    z-index: 10;                   /* Added z-index for the title */
+}
+
+.tooltip {
+    display: none;                  /* Initially hidden */
+    position: absolute;             /* Positioned relative to the title */
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;            /* Prevents text wrapping in the tooltip */
+    z-index: 20;                   /* Ensure tooltip appears above other elements */
+    left: 0;                        /* Position the tooltip under the title */
+    top: 100%;                      /* Align tooltip below the title */
+    transform: translateY(5px);    /* Add some space between the title and the tooltip */
+}
+
+.taskTitleWrapper:hover .tooltip {
+    display: block;                 /* Show tooltip on hover */
+}
+.dueDatePlaceholder {
+  width: 40px; /* Adjust width to match .dueDate button */
+
+}
+
+  /* Third Line: Checklist */
+  .checklist {
+    font-size: 12px;
+    color: #555;
+    margin-top: 15px;
+  }
+  .footerRow .doneDueDate {
+    background: #63C05B;
+    color: #FFFFFF;
+  }
+  
+  
+  /* Fourth Line: Due Date and Status Tags */
+  .footerRow {
+    display: flex;
+    gap: 10px;
+margin-top: 10px;
+max-width: 270px;
+justify-content: space-between; /* Distributes space between items */
+align-items: center; /* Aligns items vertically in the center */
+width: 100%; /* Ensure it takes full width */
+  }
+  
+  .dueDate {
+    background-color: #f5f5f5;
+    color: #5A5A5A;;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 8px;
+    font-family: poppins;
+    border: none;
+    font-weight: 500;
+  }
+  .highPriorityDueDate {
+    background: #CF3636; /* Red background for high priority */
+    color: #FFF; /* White text color */
+    border: none;
+  }
+  .statusTags {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .tag {
+    background-color: #e0e0e0;
+    color:#767575;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 8px;
+    font-weight: 500;
+    border: none;
+    font-family: poppins;
+  }
+  
+  /* Dropdown Menu */
+  .dropdownMenu {
+    width: 150px;
+    position: absolute;
+    top: 35px;
+    right: 0; /* Change this to position it on the right */
+    border-radius: 12px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    z-index: 30;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .menuItem {
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  
+  .menuItem:hover {
+    background-color: #f0f0f0;
+  }
+  .dropdownButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .extendButton {
+    margin-top: 10px; /* Space above the button */
+    background-color: #007BFF; /* Example color */
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+  }

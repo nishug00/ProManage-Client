@@ -1,0 +1,146 @@
+/* Container: Flexbox layout */
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+
+/* Left side styles */
+.leftSide {
+  width: 1008.84px;
+  /* Fixed width for left side */
+  height: 100%;
+  background-color: #17a2b8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(33px);
+  opacity: 1;
+}
+
+/* Centered circular element */
+.centeredElement {
+  width: 260px;
+  height: 250px;
+  background-color: #317f8b;
+  border-radius: 50%;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.image {
+  width: 220px;
+  height: 250px;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Welcome messages */
+.welcomeMessage {
+  font-size: 33.08px;
+  line-height: 66.15px;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.welcomeSubMessage {
+  font-size: 19.29px;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* Right side styles */
+.rightSide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 45%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  height: 100vh;
+  padding: 10px;
+}
+.registerButton {
+  width: 400px;              
+  height: 50px;              
+  padding: 0;                    
+  background-color: transparent; /* Ensure the button background is transparent */
+  color: #17a2b8;               
+  border: 1px solid #17a2b8;    
+  border-radius: 50px;
+  font-size: 16px;           
+  cursor: pointer;            
+  display: flex;                 
+  justify-content: center;       
+  align-items: center;                            
+  opacity: 1;                    
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative; /* Add position if needed */
+  z-index: 1; /* Ensure button is above other elements */
+  margin-top: 30px;
+}
+
+
+.registerButton:hover {
+  background-color: #17a2b8;     /* Background color on hover */
+  color: #ffffff;                /* Text color changes to white on hover */
+}
+
+
+.loginButton {
+  width: 493.39px;               /* Fixed width */
+  height: 55.13px;               /* Hug height */
+  padding: 0;                    /* No padding */
+  background-color: transparent; /* Ghost (transparent) background for "Outline" */
+  color: #17a2b8;                /* Secondary color for the text */
+  border: 1px solid #17a2b8;     /* Ghost style with a border */
+  border-radius: 55.13px; 
+  font-size: 16px;               /* Normal size */
+  cursor: pointer;               /* Pointer cursor on hover */
+  display: flex;                 /* Flexbox to center the text */
+  justify-content: center;       /* Center horizontally */
+  align-items: center;           /* Center vertically */
+  gap: 0px;                      /* No gap */
+  opacity: 1;                    /* Fully visible */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-left: 20px;
+}
+
+.loginButton:hover {
+  background-color: #17a2b8;     /* Background color on hover */
+  color: #ffffff;                /* Text color changes to white on hover */
+}
+/* Media queries for responsiveness */
+@media (max-width: 1600px) {
+  .leftSide {
+    width: 60%;
+  }
+
+  .rightSide {
+    width: 40%;
+  }
+}
+
+@media (max-width: 768px) {
+  .leftSide {
+    width: 100%;
+    height: auto;
+  }
+
+  .rightSide {
+    display: none;
+  }
+
+  .centeredElement {
+    width: 80%;
+    height: 80%;
+  }
+}

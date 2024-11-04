@@ -1,0 +1,111 @@
+.loginFormContainer {
+  align-items: center;
+  justify-content: center;
+}
+
+/* Login header */
+.title {
+  font-size: 33.08px;
+  font-weight: 600;
+  line-height: 45.04px;
+  color: #343434;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 44px;
+}
+
+/* Wrapper around the input and icon */
+.inputWrapper {
+  position: relative;
+  margin-bottom: 15px;
+  margin-left: 30px;
+
+}
+
+/* Input field */
+.inputField {
+  width: 100%;
+  padding: 12px 15px 12px 40px; /* Extra left padding for the icon */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+.inputImage {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Email icon styles */
+.iconWrapper {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #aaa;
+}
+
+.inputField::placeholder {
+  color: #aaa;
+}
+
+/* Login button */
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-left: 30px;
+  margin-top: 50px;
+}
+
+.loginButton {
+  width: 100%; /* Full width for responsiveness */
+  height: 50px;               
+  padding: 0px 20px; /* Add padding for smaller devices */
+  background-color: #17a2b8;        
+  color: #ffffff;                   
+  border: none;                    
+  border-radius: 55.13px; 
+  cursor: pointer;                 
+  font-size: 16px;              
+  display: flex;                    
+  justify-content: center;         
+  align-items: center;              
+}
+
+.loginButton:hover {
+  background-color: #158fa1;       
+}
+
+/* Register section */
+.registerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.registerText {
+  margin-right: 10px;
+  font-size: 19px;
+  color: #828282  ;
+  font-weight: 400;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .loginButton {
+      width: 100%; /* Full width for mobile */
+  }
+  .inputField {
+      font-size: 14px; /* Smaller font size */
+  }
+  .title {
+      font-size: 24px; /* Smaller title */
+  }
+}

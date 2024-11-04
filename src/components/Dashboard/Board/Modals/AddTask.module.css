@@ -1,0 +1,333 @@
+.addTaskContent {
+    border-radius: 8px;
+    max-width: 650px;
+    margin: auto;
+    display: flex;
+    flex-direction: column; 
+    height: 100%; 
+}
+
+.contentWrapper {
+  max-height: 550px; 
+  flex: 1;
+  overflow-y: auto; 
+  padding-right: 5px;
+}
+
+.contentWrapper::-webkit-scrollbar {
+height: 10px;
+width:3px;
+}
+
+.contentWrapper::-webkit-scrollbar-thumb {
+background-color: #888;
+border-radius: 15px;
+}
+
+.contentWrapper::-webkit-scrollbar-thumb:hover {
+background-color: #555;
+}
+
+.inputWrapper {
+  position: relative;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.required {
+  margin-left: 1px;
+  color: red; 
+}
+
+.inputField {
+  width: 100%; 
+  padding: 10px 16px;
+  gap: 10px;
+  border-radius: 4px ;
+  border: 1px solid #E2E2E2; 
+  background: #FFFFFF; 
+  font-family: 'Inter', sans-serif; 
+  font-size: 14px; 
+  font-weight: 400;
+  line-height: 20px; 
+  letter-spacing: 0.5px; 
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease; 
+  margin-top: 8px;
+}
+
+.inputField::placeholder {
+  color:  #9B959F;
+}
+
+.priorityWrapper {
+  display: flex;
+  gap: 18px;
+}
+
+.label {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 20px;
+}
+
+.priorityButton {
+  height: 31px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-family: Poppins, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  background-color: transparent;
+  color: #767575;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  border-color: #E2E2E2;
+  margin-top: 20px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.highPriority .dot {
+  background: #FF2473;
+}
+
+.moderatePriority .dot {
+  background: #18B0FF;
+}
+
+.lowPriority .dot {
+  background: #63C05B;
+}
+
+.button:hover,
+.priorityButton:hover {
+  background-color: #EEECEC;
+  color: #767575;
+}
+.selected {
+  background-color: #EEECEC;
+  color: #767575; /* Optional: Change text color for better visibility */
+}
+.assignContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.dropdown {
+  flex-grow: 1;
+  height: 44px;
+  padding: 10px 16px;
+  border-radius: 4px;
+  border: 1px solid #E2E2E2;
+  background: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #9B959F;
+  margin-top: 20px;
+  box-shadow: 0px 1px 2px 0px #4D40551A;
+}
+
+.addNewButton {
+  font-family: 'Inter', sans-serif;
+  color: #17A2B8;
+  cursor: pointer;
+  margin-top: 12px;
+}  
+
+.taskContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  padding: 12px;
+  gap: 10px;
+  border-radius: 12px;
+  border: 1px solid #E2E2E2; 
+  opacity: 1; 
+  background-color: #FFFFFF; 
+  box-sizing: border-box; 
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  background: #17A2B8;
+  border: 2px solid #17A2B8;
+}
+
+.taskInput {
+  flex: 1; 
+  height: 40px; 
+  color: #000; 
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+  outline: none; 
+}
+
+.trashIcon {
+  width: 15px;
+  height: 18px;
+}
+
+.scrollableContent {
+  max-height: calc(100% - 60px); 
+  overflow-y: auto;
+}
+
+.footer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.actions {
+  display: flex;                 
+  justify-content: space-between; 
+  align-items: center;          
+  position: absolute;           
+  bottom: 20px;                
+  left: 20px;                 
+  right: 20px;                
+  margin-top: 30px;
+}
+
+.datePickerContainer {
+  position: relative;
+}
+
+.calendarWrapper {
+  position: absolute;
+  bottom: 40px;      
+  left: 0;         
+  z-index: 10;     
+}
+
+.selectDueDateButton {
+  width: 180px;
+  padding: 10px 20px; 
+  border-radius: 12px;
+  border: 1px solid #E2E2E2; 
+  background-color: transparent; 
+  color: #707070; 
+  cursor: pointer; 
+  margin-right: 10px; 
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.buttonContainer {
+    display: flex;            
+    gap: 10px;                     
+}
+
+.cancelButton {
+    width: 160px;                
+    height: 45px;                  
+    border-radius: 12px;          
+    color: #CF3636;           
+    border: 1px solid #CF3636;  
+    cursor: pointer;                
+    background-color: #FFFFFF;                 
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.saveButton {
+    width: 160px;                  
+    height: 45px;                  
+    border-radius: 12px;           
+    background: #17A2B8;           
+    cursor: pointer;              
+    border: none;                  
+    color: #FFFFFF;         
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 600;
+}
+.assignRow {
+  display: flex;
+  gap: 12px; /* Adjust spacing between label and dropdown */
+  width: 100%; /* Optional: adjust width if needed */
+}
+
+.customDropdown {
+  position: relative;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.selectedOption {
+  border: 1px solid #E2E2E2;
+  padding: 10px 12px;
+  background: #FFFFFF;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.optionsList {
+  position: absolute;
+  top: 45px;
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 4px;
+  z-index: 1;
+  border: 1px solid #7E7A7A14
+}
+
+.optionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  color: #20102B;
+  background: #FFFFFF;
+  
+}
+
+
+.email {
+  flex: 1;
+  text-align: left;
+  font-family: Inter;
+font-size: 16px;
+font-weight: 500;
+
+}
+
+.assignButton {
+  width: 150px;
+  padding: 5px 10px;
+  border: 1px solid #E2E2E2; /* Set border to solid with #E2E2E2 color */
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  color: #767575;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: poppins, sans-serif;
+  font-weight: 500;
+}

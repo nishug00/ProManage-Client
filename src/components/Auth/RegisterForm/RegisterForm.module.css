@@ -1,0 +1,126 @@
+.registerFormContainer {
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;           /* Make sure it takes up the full available width */
+  max-width: 450px;      /* Set a max-width to control container size */
+  margin: 0 auto;        /* Center the container */
+
+  border-radius: 8px;    /* Optional: rounds the corners */
+}
+
+  /* Register header */
+  .title {
+    font-size: 33.08px;
+    font-weight: 600;
+    line-height: 45.04px;
+    color: #343434;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 44px;
+  }
+  
+  /* Wrapper around the input and icon */
+  .inputWrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  .inputImage {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  /* Input field */
+  .inputField {
+    width: 100%;
+    padding: 12px 15px 12px 40px; /* Extra left padding for the icon */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  /* Email icon styles */
+  .iconWrapper {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #aaa;
+  }
+  
+  .inputField::placeholder {
+    color: #aaa;
+  }
+  
+  /* Register button */
+  .buttonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 55px;
+  }
+  
+  .registerButton {
+    width: 493.39px;
+    height: 55.13px;
+    padding: 0 132.31px;
+    background-color: #17a2b8;
+    color: #ffffff;
+    border: none;
+    border-radius: 55.13px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .registerButton:hover {
+    background-color: #158fa1;
+  }
+  
+  /* Login section */
+  .loginWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .loginText {
+    margin-right: 10px;
+    font-size: 14px;
+    color: #343434;
+  }
+  
+  /* Uncomment this section if you want to use the login button */
+  /*
+  .loginButton {
+    width: 493.39px;
+    height: 55.13px;
+    padding: 0;
+    background-color: transparent;
+    color: #17a2b8;
+    border: 2px solid #17a2b8;
+    border-radius: 55.13px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .loginButton:hover {
+    background-color: #17a2b8;
+    color: #ffffff;
+  }
+  */
+  

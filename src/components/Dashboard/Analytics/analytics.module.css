@@ -1,0 +1,97 @@
+.dashboardContainer {
+    width: 100%;
+    height: 100vh; 
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    overflow: hidden; 
+}
+
+.mainContent {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+    height: 100%;
+    padding:30px
+}
+
+.subHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: top;
+}
+
+.analyticsTitle {
+    font-size: 22px;
+    font-weight: 600;
+}
+.cardContainer {
+    display: flex; /* Use flexbox for horizontal alignment */
+    flex-direction: row; /* Align items in a row */
+    gap: 24px; /* Space between the cards, adjust as needed */
+    padding: 30px;
+    margin-top: 30px;
+}
+
+.card {
+
+    border-radius: 12px 0px 0px 0px; /* Card border radius */
+    background: #F9FCFF; /* Card background color */
+    display: flex; /* Enable flexbox for content alignment */
+    justify-content: center; /* Center content */
+    opacity: 1; /* Ensure the card is visible */
+    margin: 20px 0; /* Add vertical spacing between cards */
+}
+
+.cardList {
+    display: flex; /* Use flexbox for horizontal alignment */
+    flex-direction: column; /* Stack items vertically */
+    gap: 38px; /* Space between list items */
+    opacity: 1; /* Ensure the list is visible */
+    padding: 0; /* Remove default padding */
+    list-style: none; /* Remove bullet points */
+    padding:30px;
+    padding-right: 0;
+}
+.itemText {
+    font-size: 18px; /* Font size */
+    font-weight: 400; /* Font weight */
+    text-align: left; /* Text alignment */
+}
+
+.listItem {
+    width: 412px; /* Each item width */
+    height: auto; /* Adjust height based on content */
+    display: flex; /* Enable flexbox for alignment */
+    align-items: center; /* Align items vertically */
+    justify-content: space-between; /* Push text to left and number to right */
+    opacity: 1; /* Ensure the item is visible */
+    position: relative; /* Required for absolute positioning of bullets */
+    padding-left: 25px; /* Adjust if needed to create space for bullets */
+    padding-right: 10px; /* Space for the number on the right */
+}
+
+.listItem::before {
+    content: ''; /* Empty content for the bullet */
+    width: 12px; /* Bullet width */
+    height: 12px; /* Bullet height */
+    background: #90C4CC; /* Bullet background color */
+    border-radius: 50%; /* Make it circular */
+    position: absolute; /* Positioning relative to the list item */
+    left: 0; /* Align to the left */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust vertical position */
+    opacity: 1; /* Set opacity for visibility */
+}
+.number {
+    width: 23px; /* Set width for the number */
+    height: 14px; /* Set height for the number */
+    font-family: 'Open Sans', sans-serif; /* Font family */
+    font-size: 20px; /* Font size */
+    font-weight: 600; /* Font weight */
+    line-height: 27.24px; /* Line height */
+    text-align: left; /* Text alignment */
+    opacity: 1; /* Set opacity for visibility */
+    margin-right: 8px; /* Space between the number and the text */
+}
