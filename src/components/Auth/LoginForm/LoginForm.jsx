@@ -41,11 +41,12 @@ function LoginForm() {
     setErrorMessages({ email: "", password: "" });
     try {
       const res = await login({ email: Email, password: Password });
+      console.log("res", res);
       if (res.status === 200) {
         toast.success("Logged in successfully");
         const token = res.data.token;
         localStorage.setItem("token", token);
-        navigate("/board");
+         navigate("/board");
       } else {
         toast.error("Something went wrong");
       }

@@ -4,10 +4,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
 import { fetchRegisteredUsers } from "../../../../services/auth";
-import { addTask } from "../../../../services/task";
+import { addTask, getTaskById } from "../../../../services/task"; 
 import trashIcon from "../../../../assets/trashicon.png";
 import toast from "react-hot-toast";
-function AddTask({ setAddTaskModalOpen }) {
+
+function AddTask({ setAddTaskModalOpen, taskId }) {
   const [title, setTitle] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
   const [tasks, setTasks] = useState([]);
@@ -15,32 +16,53 @@ function AddTask({ setAddTaskModalOpen }) {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [assign, setAssign] = useState([]);
   const [selectedPriority, setSelectedPriority] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // Function to add a new task
-  const handleAddTask = () => {
-    const newTask = { id: Date.now(), name: "" };
-    setTasks((prevTasks) => [...prevTasks, newTask]);
-  };
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      console.log("Going inside fetchUsers");
       try {
         const data = await fetchRegisteredUsers();
-        console.log("data", data);
         const emails = data.data.map((person) => person.email);
         setAssign(data.data); // Set full data to assign state
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
-
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    // Fetch and prefill task data if in edit mode
+    const fetchTaskData = async () => {
+      if (taskId) { // Only fetch if taskId is provided (indicating edit mode)
+        console.log("Fetching task data for taskId:", taskId);
+        try {
+          console.log("Fetching task with ID:", taskId); // Add this line
+          const task = await getTaskById(taskId);
+          
+          setTitle(task.title);
+          setAssignedTo(task.assignedTo);
+          setDueDate(new Date(task.dueDate));
+          setSelectedPriority(task.selectedPriority);
+          setTasks(task.checklist || []); // Prefill checklist tasks
+        } catch (error) {
+          console.error("Error fetching task data:", error);
+        }
+      }
+    };
+    fetchTaskData();
+  }, [taskId]);
+
+  const handleAddTask = () => {
+    const newTask = { id: Date.now(), name: "", completed: false };
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  };
 
   const handleAssign = (personId) => {
     setAssignedTo(personId);
     setDropdownOpen(false); // Close dropdown after selecting
   };
+
   const handleInputChange = (id, value) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
@@ -48,6 +70,7 @@ function AddTask({ setAddTaskModalOpen }) {
       )
     );
   };
+
   const handlePriorityClick = (priority) => {
     setSelectedPriority(priority);
   };
@@ -55,21 +78,21 @@ function AddTask({ setAddTaskModalOpen }) {
   const handleDeleteTask = (id) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
+
   const toggleCalendar = () => {
     setCalendarOpen((prev) => !prev);
   };
+
   const handleCancel = () => {
     setAddTaskModalOpen(false);
   };
+
   const handleCheckboxChange = (id) => {
     setTasks((prevTasks) =>
-      prevTasks.map((task) => {
-        if (task.id === id) {
-          const updatedTask = { ...task, completed: !task.completed };
-          return updatedTask;
-        }
-        return task;
-      })
+      prevTasks.map((task) => ({
+        ...task,
+        completed: task.id === id ? !task.completed : task.completed,
+      }))
     );
   };
 
@@ -78,13 +101,14 @@ function AddTask({ setAddTaskModalOpen }) {
       const taskData = {
         title,
         selectedPriority,
-        assignedTo, // This holds the ObjectId of the selected assignee
+        assignedTo,
         dueDate,
         checklist: tasks.map((task) => ({
           name: task.name,
-          completed: task.completed, // Only include completed status from the task itself
+          completed: task.completed,
         })),
       };
+
       const result = await addTask(taskData);
       if (result?.message === "Task added successfully") {
         toast.success("Task added successfully");
@@ -102,7 +126,6 @@ function AddTask({ setAddTaskModalOpen }) {
   return (
     <div className={styles.addTaskContent}>
       <div className={styles.contentWrapper}>
-        {/* Title Field */}
         <div className={styles.inputWrapper}>
           Title<span className={styles.required}>*</span>
           <input
@@ -194,7 +217,6 @@ function AddTask({ setAddTaskModalOpen }) {
               onChange={(e) => handleInputChange(task.id, e.target.value)}
               placeholder="Add a task"
             />
-
             <img
               src={trashIcon}
               alt="delete"
@@ -209,7 +231,6 @@ function AddTask({ setAddTaskModalOpen }) {
         </div>
       </div>
 
-      {/* Footer section */}
       <div className={styles.footer}>
         <div className={styles.datePickerContainer}>
           <button
@@ -224,9 +245,9 @@ function AddTask({ setAddTaskModalOpen }) {
                 selected={dueDate}
                 onChange={(date) => {
                   setDueDate(date);
-                  setCalendarOpen(false); // Close the calendar after selecting a date
+                  setCalendarOpen(false);
                 }}
-                inline // Display calendar inline or you can remove this for dropdown
+                inline
               />
             </div>
           )}

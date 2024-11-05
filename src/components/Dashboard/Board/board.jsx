@@ -11,35 +11,23 @@ import "@vscode/codicons/dist/codicon.css";
 import { getAllMember } from "../../../services/member";
 import toast from "react-hot-toast";
 import { updateTaskStatus } from "../../../services/task";
+import { fetchAssignedTasks } from "../../../services/task";
+import { deleteTask } from "../../../services/task";
+
 function Board() {
   const [username, setUsername] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   const [addPeopleModalOpen, setAddPeopleModalOpen] = useState(false);
   const [addTaskModalOpen, setAddTaskModalOpen] = useState(false);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [dropdownVisible, setDropdownVisible] = useState({});
   const [tasks, setTasks] = useState([]);
-  const [isChecklistVisible, setChecklistVisible] = useState(false);
+  const [checklistVisible, setChecklistVisible] = useState({});
   const [assign, setAssign] = useState([]);
-
-  useEffect(() => {
-    const fetchUserDetailsFromApi = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const userDetails = await fetchUserDetails(token);
-          const { username } = userDetails;
-          setUsername(username);
-        } catch (error) {
-          console.error("Error fetching user details:", error);
-        }
-      } else {
-        console.error("Token is null");
-      }
-    };
-
-    fetchUserDetailsFromApi();
-  }, []);
-
+  const [userId, setUserId] = useState(null);
+  const [selectedTimeframe, setSelectedTimeframe] = useState("Today");
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
   useEffect(() => {
     const fetchAssign = async () => {
       try {
@@ -103,21 +91,57 @@ function Board() {
     const fetchTask = async () => {
       try {
         const data = await getTask();
-        setTasks(data); // Store fetched tasks in state
-        console.log("Fetched tasks:", data);
+        setTasks(data);
       } catch (error) {
-        console.error("Error fetching task:", error);
+        console.error("Error fetching tasks:", error);
       }
     };
+
     fetchTask();
   }, []);
 
+  useEffect(() => {
+    const fetchUserDetailsFromApi = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const userDetails = await fetchUserDetails(token);
+          const { userid, username } = userDetails;
+          setUserId(userid);
+          setUsername(username);
+        } catch (error) {
+          console.error("Error fetching user details:", error);
+        }
+      } else {
+        console.error("Token is null");
+      }
+    };
 
+    fetchUserDetailsFromApi();
+  }, []);
 
-  const handleChecklistToggle = () => {
-    setChecklistVisible(!isChecklistVisible);
+  // Fetch assigned tasks based on userId
+  useEffect(() => {
+    if (userId) {
+      const loadTasks = async () => {
+        const tasks = await fetchAssignedTasks(userId);
+        if (tasks) {
+          setTasks(tasks);
+        } else {
+          console.log("No tasks found for userId:", userId);
+        }
+      };
+
+      loadTasks();
+    } else {
+      console.log("userId is undefined or null, cannot load tasks"); // Log when userId is not set
+    }
+  }, [userId]);
+  const handleEditClick = (taskId) => {
+    console.log("Edit button clicked for task ID:", taskId);
+    setSelectedTaskId(taskId); // Set the task ID
+    setIsEditModalOpen(true); // Open the modal
   };
-
   const formatDueDate = (dateString) => {
     const options = { month: "short", day: "numeric" };
     const date = new Date(dateString);
@@ -134,11 +158,8 @@ function Board() {
   };
 
   const handleStatusChange = async (taskId, newStatus) => {
-    console.log("taskId&status", taskId, newStatus);
     try {
-      console.log("going inside");
       await updateTaskStatus(taskId, newStatus);
-      console.log("updated successfully");
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task._id === taskId ? { ...task, status: newStatus } : task
@@ -149,6 +170,41 @@ function Board() {
     } catch (error) {
       console.error("Error updating task status:", error);
       toast.error("Failed to move task. Please try again.");
+    }
+  };
+
+  const toggleDropdown = (taskId) => {
+    console.log("Dropdown toggled for task ID:", taskId); // Log task ID to console
+    setDropdownVisible((prevState) => ({
+      ...prevState,
+      [taskId]: !prevState[taskId],
+    }));
+  };
+
+  const toggleChecklist = (taskId) => {
+    setChecklistVisible((prevState) => ({
+      ...prevState,
+      [taskId]: !prevState[taskId],
+    }));
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    try {
+      // Call the deleteTask function
+      const response = await deleteTask(taskId);
+      console.log("Response from deleteTask:", response); // Log the response from the deleteTask function
+
+      setTasks((prevTasks) => {
+        const updatedTasks = prevTasks.filter((task) => task._id !== taskId);
+        console.log("Updated tasks after deletion:", updatedTasks); // Log the updated task list
+        return updatedTasks;
+      });
+
+      // Notify the user of success
+      toast.success("Task deleted successfully");
+    } catch (error) {
+      console.error("Error deleting task:", error); // Log the error for debugging
+      toast.error("Failed to delete task. Please try again.");
     }
   };
 
@@ -177,11 +233,25 @@ function Board() {
           </div>
 
           <div className={styles.dropdownContainer}>
-            <select className={styles.dateDropdown}>
+            <select
+              className={styles.dateDropdown}
+              value={selectedTimeframe}
+              
+            >
               <option value="Today">Today</option>
               <option value="Week">This Week</option>
               <option value="Month">This Month</option>
             </select>
+          </div>
+
+          <div className={styles.contentWrapper}>
+            {filteredTasks.map((task) => (
+              <div key={task._id} className={styles.taskWrapper}>
+                {/* Render your task details here */}
+                <h3>{task.title}</h3>
+                {/* Add more task details as needed */}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -198,7 +268,6 @@ function Board() {
                 .map((task) => (
                   <div key={task._id} className={styles.taskWrapper}>
                     <div className={styles.taskContainer}>
-                      {/* First Line: Priority Dot, Priority Label, Assignee Avatar */}
                       <div className={styles.headerRow}>
                         <div
                           className={`${styles.dot} ${
@@ -212,7 +281,6 @@ function Board() {
                         <span className={styles.priorityLabel}>
                           {task.priority.toUpperCase()} PRIORITY
                         </span>
-
                         <div className={styles.assigneeAvatar}>
                           {assign.length > 0 && (
                             <Avatar
@@ -228,19 +296,15 @@ function Board() {
                         </div>
                         <button
                           className={styles.dotsButton}
-                          onClick={() => setDropdownVisible(!dropdownVisible)}
+                          onClick={() => toggleDropdown(task._id)}
                           aria-label="More options"
                         >
                           ...
                         </button>
                       </div>
                       <div className={styles.taskTitleWrapper}>
-                        {" "}
-                        {/* Wrap title and tooltip in a new div */}
                         <h3 className={styles.taskTitle}>{task.title}</h3>
-                        <span className={styles.tooltip}>
-                          {task.title}
-                        </span>{" "}
+                        <span className={styles.tooltip}>{task.title}</span>
                       </div>
                       <div className={styles.checklistLayout}>
                         <div className={styles.label}>
@@ -253,13 +317,13 @@ function Board() {
                         </div>
                         <span
                           className="codicon codicon-chevron-down"
-                          onClick={handleChecklistToggle}
+                          onClick={() => toggleChecklist(task._id)}
                         ></span>
                       </div>
 
-                      <div className={styles.checklist}>
-                        {isChecklistVisible &&
-                          task.checklist.map((checkItem) => (
+                      {checklistVisible[task._id] && (
+                        <div className={styles.checklist}>
+                          {task.checklist.map((checkItem) => (
                             <div
                               key={checkItem._id}
                               className={styles.checklistContainer}
@@ -286,7 +350,9 @@ function Board() {
                               />
                             </div>
                           ))}
-                      </div>
+                        </div>
+                      )}
+
                       <div className={styles.footerRow}>
                         {task.dueDate ? (
                           <button
@@ -299,9 +365,8 @@ function Board() {
                             {formatDueDate(task.dueDate)}
                           </button>
                         ) : (
-                          <div className={styles.dueDatePlaceholder}></div> // Placeholder for due date
+                          <div className={styles.dueDatePlaceholder}></div>
                         )}
-
                         <div className={styles.statusTags}>
                           <button
                             className={styles.tag}
@@ -325,17 +390,38 @@ function Board() {
                           </button>
                         </div>
                       </div>
+
+                      {dropdownVisible[task._id] && (
+                        <div className={styles.dropdownMenu}>
+                          <div
+                            className={styles.menuItem}
+                            onClick={handleEditClick}
+                          >
+                            Edit
+                          </div>
+                          <div className={styles.menuItem}>Share</div>
+                          <div
+                            className={styles.menuItem}
+                            style={{ color: "#CF3636" }}
+                            onClick={() => handleDeleteTask(task._id)} // Ensure task._id is passed here
+                          >
+                            Delete
+                          </div>
+                        </div>
+                      )}
+                      {isEditModalOpen && (
+                        <div className={styles.modalOverlay}>
+                          <div className={styles.editModalContainer}>
+                            <AddTask
+                              setAddTaskModalOpen={setIsEditModalOpen}
+                              taskId={selectedTaskId} // Pass the selected task ID
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
-
-              {dropdownVisible && (
-                <div className={styles.dropdownMenu}>
-                  <div className={styles.menuItem}>Edit</div>
-                  <div className={styles.menuItem}>Share</div>
-                  <div className={styles.menuItem}>Delete</div>
-                </div>
-              )}
             </div>
           </div>
 
@@ -349,7 +435,6 @@ function Board() {
             <div className={styles.contentWrapper}>
               {tasks
                 .filter((task) => task.status === "toDo")
-
                 .map((task) => (
                   <div key={task._id} className={styles.taskWrapper}>
                     <div className={styles.taskContainer}>
@@ -381,19 +466,15 @@ function Board() {
                         </div>
                         <button
                           className={styles.dotsButton}
-                          onClick={() => setDropdownVisible(!dropdownVisible)}
+                          onClick={() => toggleDropdown("toDo")}
                           aria-label="More options"
                         >
                           ...
                         </button>
                       </div>
                       <div className={styles.taskTitleWrapper}>
-                        <h3 className={styles.taskTitle}>
-                          {task.title}
-                          <span className={styles.tooltip}>
-                            {task.title}
-                          </span>{" "}
-                        </h3>
+                        <h3 className={styles.taskTitle}>{task.title}</h3>
+                        <span className={styles.tooltip}>{task.title}</span>
                       </div>
                       <div className={styles.checklistLayout}>
                         <div className={styles.label}>
@@ -406,13 +487,12 @@ function Board() {
                         </div>
                         <span
                           className="codicon codicon-chevron-down"
-                          onClick={handleChecklistToggle}
+                          onClick={() => toggleChecklist(task._id)}
                         ></span>
                       </div>
-
-                      <div className={styles.checklist}>
-                        {isChecklistVisible &&
-                          task.checklist.map((checkItem) => (
+                      {checklistVisible[task._id] && (
+                        <div className={styles.checklist}>
+                          {task.checklist.map((checkItem) => (
                             <div
                               key={checkItem._id}
                               className={styles.checklistContainer}
@@ -439,7 +519,8 @@ function Board() {
                               />
                             </div>
                           ))}
-                      </div>
+                        </div>
+                      )}
                       <div className={styles.footerRow}>
                         {task.dueDate ? (
                           <button
@@ -454,7 +535,6 @@ function Board() {
                         ) : (
                           <div className={styles.dueDatePlaceholder}></div>
                         )}
-
                         <div className={styles.statusTags}>
                           <button
                             className={styles.tag}
@@ -480,28 +560,39 @@ function Board() {
                           </button>
                         </div>
                       </div>
+                      {/* Render dropdown only for the active task */}
+                      {dropdownVisible.toDo && (
+                        <div className={styles.dropdownMenu}>
+                          <div
+                            className={styles.menuItem}
+                            onClick={handleEditClick}
+                          >
+                            Edit
+                          </div>
+                          <div className={styles.menuItem}>Share</div>
+                          <div
+                            className={styles.menuItem}
+                            style={{ color: "#CF3636" }}
+                          >
+                            Delete
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
-              {dropdownVisible && (
-                <div className={styles.dropdownMenu}>
-                  <div className={styles.menuItem}>Edit</div>
-                  <div className={styles.menuItem}>Share</div>
-                  <div className={styles.menuItem}>Delete</div>
-                </div>
-              )}
             </div>
           </div>
-
           {/* IN PROGRESS COLUMN */}
           <div className={styles.boardColumn}>
             <div className={styles.columnText}>In Progress</div>
             <button className={styles.addTask}>
               <span className="codicon codicon-collapse-all"></span>
             </button>
+
             <div className={styles.contentWrapper}>
               {tasks
-                .filter((task) => task.status === "inProgress")
+                .filter((task) => task.status === "inProgress") // Adjust status to match your actual data
                 .map((task) => (
                   <div key={task._id} className={styles.taskWrapper}>
                     <div className={styles.taskContainer}>
@@ -533,20 +624,18 @@ function Board() {
                         </div>
                         <button
                           className={styles.dotsButton}
-                          onClick={() => setDropdownVisible(!dropdownVisible)}
+                          onClick={() => toggleDropdown("inProgress")}
                           aria-label="More options"
                         >
                           ...
                         </button>
                       </div>
                       <div className={styles.taskTitleWrapper}>
-                        <h3 className={styles.taskTitle}>
+                        <h3 className={styles.taskTitle}>{task.title}</h3>
+                        <span className={styles.tooltip}>
                           {task.title}
-                          <span className={styles.tooltip}>
-                            {task.title}
-                          </span>{" "}
-                          {/* Tooltip for full title */}
-                        </h3>
+                        </span>{" "}
+                        {/* Tooltip for full title */}
                       </div>
                       <div className={styles.checklistLayout}>
                         <div className={styles.label}>
@@ -559,13 +648,13 @@ function Board() {
                         </div>
                         <span
                           className="codicon codicon-chevron-down"
-                          onClick={handleChecklistToggle}
+                          onClick={() => toggleChecklist(task._id)}
                         ></span>
                       </div>
 
-                      <div className={styles.checklist}>
-                        {isChecklistVisible &&
-                          task.checklist.map((checkItem) => (
+                      {checklistVisible[task._id] && (
+                        <div className={styles.checklist}>
+                          {task.checklist.map((checkItem) => (
                             <div
                               key={checkItem._id}
                               className={styles.checklistContainer}
@@ -592,7 +681,8 @@ function Board() {
                               />
                             </div>
                           ))}
-                      </div>
+                        </div>
+                      )}
                       <div className={styles.footerRow}>
                         {task.dueDate ? (
                           <button
@@ -634,11 +724,15 @@ function Board() {
                     </div>
                   </div>
                 ))}
-              {dropdownVisible && (
+              {dropdownVisible.inProgress && (
                 <div className={styles.dropdownMenu}>
-                  <div className={styles.menuItem}>Edit</div>
+                  <div className={styles.menuItem} onClick={handleEditClick}>
+                    Edit
+                  </div>
                   <div className={styles.menuItem}>Share</div>
-                  <div className={styles.menuItem}>Delete</div>
+                  <div className={styles.menuItem} style={{ color: "#CF3636" }}>
+                    Delete
+                  </div>
                 </div>
               )}
             </div>
@@ -650,6 +744,7 @@ function Board() {
             <button className={styles.addTask}>
               <span className="codicon codicon-collapse-all"></span>
             </button>
+
             <div className={styles.contentWrapper}>
               {tasks
                 .filter((task) => task.status === "done")
@@ -685,20 +780,22 @@ function Board() {
                         </div>
                         <button
                           className={styles.dotsButton}
-                          onClick={() => setDropdownVisible(!dropdownVisible)}
+                          onClick={() => toggleDropdown("done")}
                           aria-label="More options"
                         >
                           ...
                         </button>
                       </div>
+
+                      {/* Task Title */}
                       <div className={styles.taskTitleWrapper}>
                         <h3 className={styles.taskTitle}>
                           {task.title}
-                          <span className={styles.tooltip}>
-                            {task.title}
-                          </span>{" "}
+                          <span className={styles.tooltip}>{task.title}</span>
                         </h3>
                       </div>
+
+                      {/* Checklist Section */}
                       <div className={styles.checklistLayout}>
                         <div className={styles.label}>
                           Checklist (
@@ -710,13 +807,13 @@ function Board() {
                         </div>
                         <span
                           className="codicon codicon-chevron-down"
-                          onClick={handleChecklistToggle}
+                          onClick={() => toggleChecklist(task._id)}
                         ></span>
                       </div>
 
-                      <div className={styles.checklist}>
-                        {isChecklistVisible &&
-                          task.checklist.map((checkItem) => (
+                      {checklistVisible[task._id] && (
+                        <div className={styles.checklist}>
+                          {task.checklist.map((checkItem) => (
                             <div
                               key={checkItem._id}
                               className={styles.checklistContainer}
@@ -743,7 +840,10 @@ function Board() {
                               />
                             </div>
                           ))}
-                      </div>
+                        </div>
+                      )}
+
+                      {/* Footer Row with Due Date and Status Tags */}
                       <div className={styles.footerRow}>
                         {task.dueDate ? (
                           <button
@@ -789,11 +889,16 @@ function Board() {
                     </div>
                   </div>
                 ))}
-              {dropdownVisible && (
+
+              {dropdownVisible.done && (
                 <div className={styles.dropdownMenu}>
-                  <div className={styles.menuItem}>Edit</div>
+                  <div className={styles.menuItem} onClick={handleEditClick}>
+                    Edit
+                  </div>
                   <div className={styles.menuItem}>Share</div>
-                  <div className={styles.menuItem}>Delete</div>
+                  <div className={styles.menuItem} style={{ color: "#CF3636" }}>
+                    Delete
+                  </div>
                 </div>
               )}
             </div>
@@ -803,7 +908,7 @@ function Board() {
         {addPeopleModalOpen && (
           <div className={styles.modalOverlay}>
             <div className={styles.modalContainer}>
-              <AddPeople setAddPeopleModalOpen={setAddPeopleModalOpen} />
+              <AddPeople setAddTaskModalOpen={setAddTaskModalOpen} />
             </div>
           </div>
         )}

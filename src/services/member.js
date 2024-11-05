@@ -26,6 +26,5 @@ export async function getAllMember() {
     alert("You're logged out");
     window.location.href = "/login";
   }
-  console.log(res.data);
   return res;
 }

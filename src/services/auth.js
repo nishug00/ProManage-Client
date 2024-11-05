@@ -14,7 +14,6 @@ export const registerUser = async (data) => {
 };
 
 export const fetchRegisteredUsers = async () => {
-  console.log('fetchRegisteredUsers');
   const res = await axios.get(
     `${import.meta.env.VITE_BASE_URL}/api/v1/user/registered-users`, // Use GET instead of POST
     {
@@ -23,11 +22,11 @@ export const fetchRegisteredUsers = async () => {
       },
     }
   );
-  console.log('res', res);
   return res;
 };
 
 export const login = async (data) => {
+
   const res = await axios.post(
     `${import.meta.env.VITE_BASE_URL}/api/v1/user/login`,
     data,
@@ -52,6 +51,7 @@ export const fetchUserDetails = async (token) => {
     );
     return res.data;
 };
+
 export const updateUser = async (userData) => {
   const { userid } = userData;
     const token = localStorage.getItem("token");
