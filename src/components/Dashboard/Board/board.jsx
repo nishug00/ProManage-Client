@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./Board.module.css";
+import styles from "./board.module.css";
 import addPeopleIcon from "../../../assets/addpeopleicon.png";
 import Sidebar from "../Sidebar/sidebar";
 import AddPeople from "./Modals/AddPeople";
