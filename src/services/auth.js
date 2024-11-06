@@ -1,20 +1,26 @@
 import axios from "axios";
 
 export const registerUser = async (data) => {
-  console.log('data',data)
-  const response = await axios.post(
-    console.log('going inside'),
-    console.log(import.meta.env.VITE_BASE_URL)
-    `${import.meta.env.VITE_BASE_URL}/api/v1/user/register`,
-    data,
-    {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    }
-  );
-  return response.data;
+  console.log('data', data);
+  console.log('Base URL:', import.meta.env.VITE_BASE_URL);
+
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/api/v1/user/register`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error in registerUser:', error);
+    throw error; // re-throw error to handle it further up if needed
+  }
 };
+
 
 export const fetchRegisteredUsers = async () => {
   const res = await axios.get(
