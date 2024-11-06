@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const registerUser = async (data) => {
   const response = await axios.post(
+    console.log(import.meta.env.VITE_BASE_URL)
     `${import.meta.env.VITE_BASE_URL}/api/v1/user/register`,
     data,
     {
