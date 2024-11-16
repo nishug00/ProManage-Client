@@ -81,87 +81,81 @@ function RegisterForm() {
   return (
     <div className={styles.registerFormContainer}>
       <div className={styles.title}>Register</div>
+      <div className={styles.inputContainer}>
+        {/* Username Input */}
+        <div className={styles.inputWrapper}>
+          <img src={userIcon} alt="User Icon" className={styles.inputIcon} />
+          <input
+            type="text"
+            className={styles.inputField}
+            placeholder="Name"
+            value={Username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
 
-      {/* Username Input */}
-      <div className={styles.inputWrapper}>
-        <img src={userIcon} alt="User Icon" className={styles.inputImage} />
-        <input
-          type="text"
-          className={styles.inputField}
-          placeholder="Username"
-          value={Username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        {errorMessages.username && (
-          <div style={{ color: "red" }}>{errorMessages.username}</div>
-        )}
+        {/* Email Input */}
+        <div className={styles.inputWrapper}>
+          <img src={emailIcon} alt="Email Icon" className={styles.inputIcon} />
+          <input
+            type="email"
+            className={styles.inputField}
+            placeholder="Email"
+            value={Email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        {/* Password Input */}
+        <div className={styles.inputWrapper}>
+          <img src={lockIcon} alt="Lock Icon" className={styles.inputIcon} />
+          <input
+            type={showPassword ? "text" : "password"}
+            className={styles.inputField}
+            placeholder="Password"
+            value={Password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrorMessages({ ...errorMessages, password: "" }); // Reset error if any
+            }}
+          />
+          <img
+            src={showPassword ? hideIcon : viewIcon}
+            alt={showPassword ? "Hide Icon" : "View Icon"}
+            className={styles.inputIcon}
+            style={{ right: "10px", left: "auto", cursor: "pointer" }}
+            onClick={togglePasswordVisibility}
+          />
+          {errorMessages.password && (
+            <div style={{ color: "red" }}>{errorMessages.password}</div>
+          )}
+        </div>
+
+        {/* Confirm Password Input */}
+        <div className={styles.inputWrapper}>
+          <img src={lockIcon} alt="Lock Icon" className={styles.inputIcon} />
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            className={styles.inputField}
+            placeholder="Confirm Password"
+            value={ConfirmPassword}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setErrorMessages({ ...errorMessages, confirmpassword: "" }); // Reset error if any
+            }}
+          />
+          <img
+            src={showConfirmPassword ? hideIcon : viewIcon}
+            alt={showConfirmPassword ? "Hide Icon" : "View Icon"}
+            className={styles.inputIcon}
+            style={{ right: "10px", left: "auto", cursor: "pointer" }}
+            onClick={toggleConfirmPasswordVisibility}
+          />
+          {errorMessages.confirmpassword && (
+            <div style={{ color: "red" }}>{errorMessages.confirmpassword}</div>
+          )}
+        </div>
       </div>
-
-      {/* Email Input */}
-      <div className={styles.inputWrapper}>
-        <img src={emailIcon} alt="Email Icon" className={styles.inputImage} />
-        <input
-          type="email"
-          className={styles.inputField}
-          placeholder="Email"
-          value={Email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {errorMessages.email && (
-          <div style={{ color: "red" }}>{errorMessages.email}</div>
-        )}
-      </div>
-
-      {/* Password Input */}
-      <div className={styles.inputWrapper}>
-        <img src={lockIcon} alt="Lock Icon" className={styles.inputImage} />
-        <input
-          type={showPassword ? "text" : "password"}
-          className={styles.inputField}
-          placeholder="Password"
-          value={Password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setErrorMessages({ ...errorMessages, password: "" }); // Reset error if any
-          }}
-        />
-        <img
-          src={showPassword ? hideIcon : viewIcon}
-          alt={showPassword ? "Hide Icon" : "View Icon"}
-          className={styles.inputImage}
-          style={{ right: "10px", left: "auto", cursor: "pointer" }}
-          onClick={togglePasswordVisibility}
-        />
-        {errorMessages.password && (
-          <div style={{ color: "red" }}>{errorMessages.password}</div>
-        )}
-      </div>
-
-      {/* Confirm Password Input */}
-      <div className={styles.inputWrapper}>
-        <img src={lockIcon} alt="Lock Icon" className={styles.inputImage} />
-        <input
-          type={showConfirmPassword ? "text" : "password"}
-          className={styles.inputField}
-          placeholder="Confirm Password"
-          value={ConfirmPassword}
-          onChange={(e) => {
-            setConfirmPassword(e.target.value);
-            setErrorMessages({ ...errorMessages, confirmpassword: "" }); // Reset error if any
-          }}
-        />
-        <img
-          src={showConfirmPassword ? hideIcon : viewIcon}
-          alt={showConfirmPassword ? "Hide Icon" : "View Icon"}
-          className={styles.inputImage}
-          style={{ right: "10px", left: "auto", cursor: "pointer" }}
-          onClick={toggleConfirmPasswordVisibility}
-        />
-        {errorMessages.confirmpassword && (
-          <div style={{ color: "red" }}>{errorMessages.confirmpassword}</div>
-        )}
-      </div>
-
       {/* Register Button */}
       <div className={styles.buttonWrapper}>
         <button className={styles.registerButton} onClick={handleSubmit}>

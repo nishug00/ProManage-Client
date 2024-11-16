@@ -46,7 +46,7 @@ function LoginForm() {
         toast.success("Logged in successfully");
         const token = res.data.token;
         localStorage.setItem("token", token);
-         navigate("/board");
+        navigate("/board");
       } else {
         toast.error("Something went wrong");
       }
@@ -64,45 +64,46 @@ function LoginForm() {
       <div className={styles.title}>Login</div>
 
       {/* Email Input */}
-      <div className={styles.inputWrapper}>
-        <img src={emailIcon} alt="Email Icon" className={styles.inputImage} />
-        <input
-          type="email"
-          className={styles.inputField}
-          placeholder="Email"
-          value={Email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {errorMessages.email && (
-          <div style={{ color: "red" }}>{errorMessages.email}</div>
-        )}
+      <div className={styles.inputContainer}>
+        {/* Email Input */}
+        <div className={styles.inputWrapper}>
+          <img src={emailIcon} alt="Email Icon" className={styles.inputIcon} />
+          <input
+            type="email"
+            className={styles.inputField}
+            placeholder="Email"
+            value={Email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        {/* Password Input */}
+        <div className={styles.inputWrapper}>
+          <img
+            src={lockIcon}
+            alt="Password Icon"
+            className={styles.inputIcon}
+          />
+          <input
+            type={showPassword ? "text" : "password"}
+            className={styles.inputField}
+            placeholder="Password"
+            value={Password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrorMessages({ ...errorMessages, password: "" });
+            }}
+          />
+          <img
+            src={showPassword ? hideIcon : viewIcon}
+            alt={showPassword ? "Hide Icon" : "View Icon"}
+            className={styles.inputIcon}
+            style={{ right: "10px", left: "auto", cursor: "pointer" }}
+            onClick={togglePasswordVisibility}
+          />
+        </div>
       </div>
 
-      {/* Password Input */}
-      <div className={styles.inputWrapper}>
-        <img src={lockIcon} alt="Password Icon" className={styles.inputImage} />
-        <input
-          type={showPassword ? "text" : "password"}
-          className={styles.inputField}
-          placeholder="Password"
-          value={Password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            // Optionally, reset password-related error message if needed
-            setErrorMessages({ ...errorMessages, password: "" });
-          }}
-        />
-        <img
-          src={showPassword ? hideIcon : viewIcon}
-          alt={showPassword ? "Hide Icon" : "View Icon"}
-          className={styles.inputImage}
-          style={{ right: "10px", left: "auto", cursor: "pointer" }}
-          onClick={togglePasswordVisibility}
-        />
-        {errorMessages.password && (
-          <div style={{ color: "red" }}>{errorMessages.password}</div>
-        )}
-      </div>
       {/* Login Button */}
       <div className={styles.buttonWrapper}>
         <button className={styles.loginButton} onClick={handleSubmit}>

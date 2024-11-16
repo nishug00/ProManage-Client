@@ -234,7 +234,7 @@
     }
 }
 .boardColumn {
-    flex: 0 0 330px; /* Fixed width of 330px for each column */
+    flex: 0 0 300px; /* Fixed width of 330px for each column */
     max-width: 330px;
     height: 100%; /* Full height within the container */
     border-radius: 10px;
